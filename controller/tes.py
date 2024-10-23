@@ -1,14 +1,13 @@
 import requests
-import pandas as pd
+import json
 
-url = "https://api.tomorrow.io/v4/weather/forecast?location=new%20york&apikey=AqwaRL5CVxt61JpyfxrCHeZAto4W6zlH"
+# url = "https://api.tomorrow.io/v4/weather/forecast?location=new%20york&apikey=AqwaRL5CVxt61JpyfxrCHeZAto4W6zlH"
 
-headers = {"accept": "application/json"}
+# headers = {"accept": "application/json"}
 
-response = requests.get(url, headers=headers)
+# response = requests.get(url, headers=headers)
 
-df = pd.DataFrame(response.text)
+# datares = json.dumps(response.text)
 
-print(df)
+test = json.loads('{"test" : {"text" : "hai test"}}')
 
-# print(response.text)
