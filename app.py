@@ -3,7 +3,7 @@ import tkinter as tk
 from tkintermapview import TkinterMapView
 from tkintermapview.canvas_button import CanvasButton
 import requests
-from layer.temperature_layer import TemperatureLabel
+from layer import *
 
 customtkinter.set_default_color_theme("blue")
 
@@ -47,6 +47,10 @@ class App(customtkinter.CTk):
         self.map_widget = TkinterMapView(self.frame, corner_radius=0)
         self.map_widget.grid(row=1, rowspan=1, column=0, columnspan=3, sticky="nsew", padx=(0, 0), pady=(0, 0))
 
+        options = ["Cloud", "Precipitation", "Pressure", "Wind", "Temperature"]
+        self.layer_selector = customtkinter.CTkOptionMenu(master=self.map_widget, values=options, command=self.change_layer)
+        self.layer_selector.grid(row=0, column=0, padx=10, pady=10)
+
         # Entry input dan tombol search
         self.search_button = customtkinter.CTkButton(master=self.map_widget, width=90, height=30, text="Search", command=self.search_event)
         self.search_button.grid(row=0, column=0, padx=5, pady=5)
@@ -59,12 +63,36 @@ class App(customtkinter.CTk):
 
         # Set default values
         self.map_widget.set_position(-7.2461420, 112.7367966)  # Surabaya
-        self.map_widget.set_zoom(13)
+        self.map_widget.set_zoom(5)
         self.map_widget.set_tile_server("https://cartodb-basemaps-a.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png")
         self.map_widget.tile_server = "https://cartodb-basemaps-a.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png"
-        self.map_widget.set_overlay_tile_server("https://tile.openweathermap.org/map/temp_new/{z}/{x}/{y}.png?appid=bdb5a3638f7c947577e361feb6a14471")
 
-        self.templabel = TemperatureLabel(self.map_widget, App.WIDTH, App.HEIGHT)
+        # Set default layer (e.g., CloudLayer)
+        self.active_layer = CloudLayer(self.map_widget)
+        
+        # Bind mouse click on map to show weather details
+        self.map_widget.canvas.bind("<Double-1>", self.on_map_double_click)
+
+    def on_map_double_click(self, event):
+        lat, lon = self.map_widget.convert_canvas_coords_to_decimal_coords(event.x, event.y)
+        data = self.active_layer.get_data(lat, lon)
+        if data:
+            self.display_weather_data(data)
+
+    def display_weather_data(self, data):
+        # Show the data in a label or pop-up as desired
+        print(data)  # Or replace with code to display in the app
+
+    def change_layer(self, selection):
+        layer_map = {
+            "Cloud": CloudLayer,
+            "Precipitation": PrecipitationLayer,
+            "Pressure": PressureLayer,
+            "Wind": WindLayer,
+            "Temperature": TemperatureLayer,
+        }
+        self.active_layer = layer_map[selection](self.map_widget)
+
 
     def search_event(self, event=None):
         location_query = self.entry.get()
@@ -93,8 +121,6 @@ class App(customtkinter.CTk):
 
     def start(self):
         self.mainloop()
-
-    def test(self):
         pass
 
 if __name__ == "__main__":
