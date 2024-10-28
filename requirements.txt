@@ -15,6 +15,7 @@ Pillow==9.5.0
 pyperclip==1.9.0
 python-dateutil==2.9.0.post0
 pytz==2024.2
+pywin32==308 ; sys_platform == 'win32'
 ratelim==0.1.6
 requests==2.32.3
 six==1.16.0
