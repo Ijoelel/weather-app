@@ -1,5 +1,4 @@
 import customtkinter
-import tkinter as tk
 from tkintermapview import TkinterMapView
 from tkintermapview.canvas_button import CanvasButton
 import requests

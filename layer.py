@@ -29,6 +29,12 @@ class CloudLayer(Layer):
     def get_data(self, lat, lon):
         pass
 
+    def on_map_double_click(self, event):
+        lat, lon = self.map_widget.convert_canvas_coords_to_decimal_coords(event.x, event.y)
+        # data = self.active_layer.get_data(lat, lon)
+        # if data:
+        #     self.display_weather_data(data)
+
 class PrecipitationLayer(Layer):
     def __init__(self, map_widget):
         super().__init__(map_widget)
@@ -36,6 +42,9 @@ class PrecipitationLayer(Layer):
 
     def get_data(self, lat, lon):
         pass
+
+    def on_map_double_click(self, event):
+        lat, lon = self.map_widget.convert_canvas_coords_to_decimal_coords(event.x, event.y)
 
 class PressureLayer(Layer):
     def __init__(self, map_widget):
@@ -45,6 +54,9 @@ class PressureLayer(Layer):
     def get_data(self, lat, lon):
         pass
 
+    def on_map_double_click(self, event):
+        lat, lon = self.map_widget.convert_canvas_coords_to_decimal_coords(event.x, event.y)
+
 class WindLayer(Layer):
     def __init__(self, map_widget):
         super().__init__(map_widget)
@@ -53,6 +65,9 @@ class WindLayer(Layer):
     def get_data(self, lat, lon):
         pass
 
+    def on_map_double_click(self, event):
+        lat, lon = self.map_widget.convert_canvas_coords_to_decimal_coords(event.x, event.y)
+
 class TemperatureLayer(Layer):
     def __init__(self, map_widget):
         super().__init__(map_widget)
@@ -60,3 +75,6 @@ class TemperatureLayer(Layer):
 
     def get_data(self, lat, lon):
         pass
+
+    def on_map_double_click(self, event):
+        lat, lon = self.map_widget.convert_canvas_coords_to_decimal_coords(event.x, event.y)
