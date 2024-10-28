@@ -69,15 +69,6 @@ class App(customtkinter.CTk):
 
         # Set default layer (e.g., CloudLayer)
         self.active_layer = CloudLayer(self.map_widget)
-        
-        # Bind mouse click on map to show weather details
-        self.map_widget.canvas.bind("<Double-1>", self.on_map_double_click)
-
-    def on_map_double_click(self, event):
-        lat, lon = self.map_widget.convert_canvas_coords_to_decimal_coords(event.x, event.y)
-        data = self.active_layer.get_data(lat, lon)
-        if data:
-            self.display_weather_data(data)
 
     def display_weather_data(self, data):
         # Show the data in a label or pop-up as desired
