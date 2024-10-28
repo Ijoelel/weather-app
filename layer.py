@@ -14,9 +14,6 @@ class Layer:
 
     def on_map_double_click(self, event):
         lat, lon = self.map_widget.convert_canvas_coords_to_decimal_coords(event.x, event.y)
-        data = self.active_layer.get_data(lat, lon)
-        if data:
-            self.display_weather_data(data)
 
     def get_data(self, lat, lon):
         pass  # Will be overridden by subclasses to fetch layer-specific data
