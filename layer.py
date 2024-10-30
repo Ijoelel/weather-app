@@ -9,14 +9,14 @@ class Layer:
         self.map_widget.canvas.bind("<Double-1>", self.on_map_double_click)
 
     def set_overlay(self, overlay_url_template):
-        self.map_widget.set_tile_server("https://cartodb-basemaps-a.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png")
+        self.map_widget.set_tile_server("https://tile.openstreetmap.org/{z}/{x}/{y}.png")
         self.map_widget.set_overlay_tile_server(overlay_url_template)
 
     def on_map_double_click(self, event):
         lat, lon = self.map_widget.convert_canvas_coords_to_decimal_coords(event.x, event.y)
 
     def get_data(self, lat, lon):
-        pass  # Will be overridden by subclasses to fetch layer-specific data
+        pass  
 
 class CloudLayer(Layer):
     def __init__(self, map_widget):
