@@ -47,6 +47,16 @@ class App(customtkinter.CTk):
         self.map_widget = TkinterMapView(self.frame, corner_radius=0)
         self.map_widget.grid(row=1, rowspan=1, column=0, columnspan=3, sticky="nsew", padx=(0, 0), pady=(0, 0))
 
+        # Entry input dan tombol search
+        self.search_button = customtkinter.CTkButton(master=self.map_widget, width=90, height=30, text="Search", command=self.search_event)
+        self.search_button.grid(row=0, column=0, padx=5, pady=5)
+        self.search_button.place(x=self.winfo_width() - self.search_button._current_width - 20, y=20)
+        
+        self.entry = customtkinter.CTkEntry(master=self.map_widget, width=400, height=30, placeholder_text="Type address")
+        self.entry.grid(padx=(5, 10), pady=5)
+        self.entry.place(x= App.WIDTH - self.entry._current_width - self.search_button._current_width - 30, y=20)
+        self.entry.bind("<Return>", self.search_event)
+
         # Layer Selector
         options = ["Cloud", "Precipitation", "Pressure", "Wind", "Temperature"]
         self.layer_selector = customtkinter.CTkOptionMenu(master=self.map_widget, values=options, command=self.change_layer)
