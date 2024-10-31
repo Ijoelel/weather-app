@@ -192,6 +192,7 @@ class PressureLayer(Layer):
         else:
             self.frame.place(x=event.x, y=event.y)
 
+
 class WindLayer(Layer):
     def __init__(self, map_widget):
         super().__init__(map_widget)
@@ -247,19 +248,19 @@ class TemperatureLayer(Layer):
         # Call API
         weather_response = (requests.get(weather_url, headers=headers)).json()["data"]["values"]
         
-        precipitation_label = customtkinter.CTkLabel(master=self.frame, text="precipitation", text_color="#888", anchor='e', justify='right',width=100, padx=8)
-        precipitation_label.grid(row=3, column=0)
-        rain_label = customtkinter.CTkLabel(master=self.frame, text="rain-intensity", text_color="#888", anchor='e', justify='right',width=100, padx=8)
-        rain_label.grid(row=4, column=0)
-        humidity_label = customtkinter.CTkLabel(master=self.frame, text="humidity_level", text_color="#888", anchor='e', justify='right',width=100, padx=8)
-        humidity_label.grid(row=5, column=0)
+        temperature_label = customtkinter.CTkLabel(master=self.frame, text="temperature", text_color="#888", anchor='e', justify='right',width=100, padx=8)
+        temperature_label.grid(row=3, column=0)
+        temp_apparent_label = customtkinter.CTkLabel(master=self.frame, text="temperature_apparent", text_color="#888", anchor='e', justify='right',width=100, padx=8)
+        temp_apparent_label.grid(row=4, column=0)
+        dew_label = customtkinter.CTkLabel(master=self.frame, text="dew_point", text_color="#888", anchor='e', justify='right',width=100, padx=8)
+        dew_label.grid(row=5, column=0)
 
-        precipitation_data = customtkinter.CTkLabel(master=self.frame, text=f"{weather_response['precipitationProbability']}%" if weather_response else 'null', text_color="black", anchor='w', justify='left',width=120, padx=8)
-        precipitation_data.grid(row=3, column=1)
-        rain_data = customtkinter.CTkLabel(master=self.frame, text=f"{weather_response['rainIntensity']}mm/hr", text_color="black", anchor='w', justify='left',width=120, padx=8)
-        rain_data.grid(row=4, column=1)
-        humidity_data = customtkinter.CTkLabel(master=self.frame, text=f"{weather_response['humidity']}%" if weather_response['humidity'] != None else "null", text_color="black", anchor='w', justify='left',width=120, padx=8)
-        humidity_data.grid(row=5, column=1)
+        temperature_data = customtkinter.CTkLabel(master=self.frame, text=f"{weather_response['temperature']}" + u"\N{DEGREE SIGN}" +"C" if weather_response else 'null', text_color="black", anchor='w', justify='left',width=120, padx=8)
+        temperature_data.grid(row=3, column=1)
+        temp_apparent_data = customtkinter.CTkLabel(master=self.frame, text=f"{weather_response['temperatureApparent']}" + u"\N{DEGREE SIGN}" +"C", text_color="black", anchor='w', justify='left',width=120, padx=8)
+        temp_apparent_data.grid(row=4, column=1)
+        dew_data = customtkinter.CTkLabel(master=self.frame, text=f"{weather_response['dewPoint']}" + u"\N{DEGREE SIGN}" +"C" if weather_response['humidity'] != None else "null", text_color="black", anchor='w', justify='left',width=120, padx=8)
+        dew_data.grid(row=5, column=1)
 
         if self.map_widget.winfo_width() - event.x < self.frame._current_width and self.map_widget.winfo_height() - event.y < self.frame._current_height:
             self.frame.place(x=event.x - self.frame._current_width, y=event.y - self.frame._current_height)

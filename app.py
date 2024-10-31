@@ -25,9 +25,6 @@ class App(customtkinter.CTk):
         self.bind("<Command-w>", self.on_closing)
         self.bind("<Configure>", self.resize)
         self.createcommand('tk::mac::Quit', self.on_closing)
-
-        self.marker_list = []
-
         # ============ create two CTkFrames ============
 
         self.grid_columnconfigure(0, weight=0)
