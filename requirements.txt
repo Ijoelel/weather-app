@@ -1,11 +1,24 @@
 certifi==2024.8.30
 charset-normalizer==3.4.0
+click==8.1.7
+colorama==0.4.6
+customtkinter==5.2.2
+darkdetect==0.8.0
+decorator==5.1.1
+future==1.0.0
+geocoder==1.38.1
 idna==3.10
 numpy==2.1.2
+packaging==24.1
 pandas==2.2.3
+Pillow==9.5.0
+pyperclip==1.9.0
 python-dateutil==2.9.0.post0
 pytz==2024.2
+pywin32==308 ; sys_platform == 'win32'
+ratelim==0.1.6
 requests==2.32.3
 six==1.16.0
+tkintermapview==1.29
 tzdata==2024.2
 urllib3==2.2.3
