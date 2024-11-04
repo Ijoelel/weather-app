@@ -3,6 +3,7 @@ from tkintermapview import TkinterMapView
 from tkintermapview.canvas_button import CanvasButton
 import requests
 from layer import *
+import geocoder
 
 customtkinter.set_default_color_theme("blue")
 
@@ -25,7 +26,6 @@ class App(customtkinter.CTk):
         self.bind("<Command-w>", self.on_closing)
         self.bind("<Configure>", self.resize)
         self.createcommand('tk::mac::Quit', self.on_closing)
-        # ============ create two CTkFrames ============
 
         self.grid_columnconfigure(0, weight=0)
         self.grid_columnconfigure(1, weight=1)
@@ -33,9 +33,6 @@ class App(customtkinter.CTk):
 
         self.frame = customtkinter.CTkFrame(master=self, corner_radius=0)
         self.frame.grid(row=0, column=1, rowspan=1, pady=0, padx=0, sticky="nsew")
-
-
-        # ============ frame ============
 
         self.frame.grid_rowconfigure(1, weight=1)
         self.frame.grid_rowconfigure(0, weight=0)
@@ -60,13 +57,16 @@ class App(customtkinter.CTk):
         self.layer_selector.grid(row=0, column=0, padx=10, pady=10)
         self.layer_selector.place(x=App.WIDTH - self.entry._current_width - self.layer_selector._current_width - self.search_button._current_width - 50, y=20)
 
-        # Set default values
-        self.map_widget.set_position(-7.2461420, 112.7367966)  # Surabaya
-        self.map_widget.set_zoom(5)
+        # Set titik mulai
+        g = geocoder.ip('me')
+        latitude = g.latlng[0]
+        longitude = g.latlng[1]
+        self.map_widget.set_position(latitude, longitude)
+        self.map_widget.set_zoom(13)
         self.map_widget.set_tile_server("https://cartodb-basemaps-a.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png")
         self.map_widget.tile_server = "https://cartodb-basemaps-a.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png"
-
-        # Set default layer (e.g., CloudLayer)
+        
+        # Set start layer 
         self.active_layer = CloudLayer(self.map_widget)
 
     def resize(self, event):
@@ -95,13 +95,11 @@ class App(customtkinter.CTk):
             data = response.json()['result'][0]['geometry']['location']
 
             if data:
-                # Ambil latitude dan longitude dari hasil
                 latitude = float(data["lat"])
                 longitude = float(data["lng"])
 
-                # Atur posisi pada peta
                 self.map_widget.set_position(latitude, longitude)
-                self.map_widget.set_zoom(17)
+                self.map_widget.set_zoom(15)
 
                 print(f"Location found: at {latitude}, {longitude}")
             else:
@@ -117,10 +115,3 @@ class App(customtkinter.CTk):
 if __name__ == "__main__":
     app = App()
     app.start()
-
-
-# Next : 
-#           - Buat kelas layer sendiri untuk nantinya akan di turunkan menjadi 5 yaitu, CloudLayer, PrecipitationLyaer, SeaPressurelayer, WindLayer dan TemperatureLayer
-#           - Tiap layer merupakan class turunan dari parent class Layer
-#           - Fitur ketika map di klik atau di hover di salah satu koordinat akan menampilkan detail bergantung pada layer yang digunakan
-#           - Gunakan API dari tomorrow.io

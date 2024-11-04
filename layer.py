@@ -22,23 +22,19 @@ class Layer():
     def fill_frame(self , event):
         self.clear_all_inside_frame()
 
-        # Close Button
         cloud_icon = customtkinter.CTkImage(light_image=Image.open("x.png"),
                                   size=(16, 16))
 
         self.frame_close_button = customtkinter.CTkButton(master=self.frame, width=20, height=20, text="", image=cloud_icon, fg_color="transparent", hover=False, command=self.close_frame)
         self.frame_close_button.grid(row=0, column=2, padx=5, pady=(4, 0))
         
-        # Main Label "Details"
         self.frame_label = customtkinter.CTkLabel(master=self.frame, text="Details", text_color='black')
         self.frame_label.grid(row=0, columnspan=2)
 
-        # Get latitude and longitude from map
         lat, lon = self.map_widget.convert_canvas_coords_to_decimal_coords(event.x, event.y)
         data_url = f"https://api.geoapify.com/v1/geocode/reverse?lat={lat}&lon={lon}&apiKey=0d010075997245ca8559e806edf4a67c"
         headers = {"accept": "application/json"}
 
-        # Call API
         data_response = (requests.get(data_url, headers=headers)).json()['features'][0]['properties']
 
         if data_response.get('country'):
@@ -79,7 +75,6 @@ class Layer():
         self.frame.place_forget()
 
     def clear_all_inside_frame(self):
-        # Iterate through every widget inside the frame
         for widget in self.frame.winfo_children():
             widget.destroy()
 
@@ -91,12 +86,10 @@ class CloudLayer(Layer):
     def on_map_double_click(self, event):
         self.fill_frame(event)
 
-        # Get latitude and longitude from map
         lat, lon = self.map_widget.convert_canvas_coords_to_decimal_coords(event.x, event.y)
         weather_url = f"https://api.tomorrow.io/v4/weather/realtime?location={lat}, {lon}&apikey=AqwaRL5CVxt61JpyfxrCHeZAto4W6zlH"
         headers = {"accept": "application/json"}
-
-        # Call API
+        
         weather_response = (requests.get(weather_url, headers=headers)).json()["data"]["values"]
         
         cloud_cover_label = customtkinter.CTkLabel(master=self.frame, text="cloud_cover", text_color="#888", anchor='e', justify='right',width=100, padx=8)
@@ -130,12 +123,10 @@ class PrecipitationLayer(Layer):
     def on_map_double_click(self, event):
         self.fill_frame(event)
         
-        # Get latitude and longitude from map
         lat, lon = self.map_widget.convert_canvas_coords_to_decimal_coords(event.x, event.y)
         weather_url = f"https://api.tomorrow.io/v4/weather/realtime?location={lat}, {lon}&apikey=AqwaRL5CVxt61JpyfxrCHeZAto4W6zlH"
         headers = {"accept": "application/json"}
 
-        # Call API
         weather_response = (requests.get(weather_url, headers=headers)).json()["data"]["values"]
         
         precipitation_label = customtkinter.CTkLabel(master=self.frame, text="precipitation", text_color="#888", anchor='e', justify='right',width=100, padx=8)
@@ -168,13 +159,11 @@ class PressureLayer(Layer):
 
     def on_map_double_click(self, event):
         self.fill_frame(event)
-        
-        # Get latitude and longitude from map
+
         lat, lon = self.map_widget.convert_canvas_coords_to_decimal_coords(event.x, event.y)
         weather_url = f"https://api.tomorrow.io/v4/weather/realtime?location={lat}, {lon}&apikey=AqwaRL5CVxt61JpyfxrCHeZAto4W6zlH"
         headers = {"accept": "application/json"}
 
-        # Call API
         weather_response = (requests.get(weather_url, headers=headers)).json()["data"]["values"]
         
         pressure_label = customtkinter.CTkLabel(master=self.frame, text="pressure_level", text_color="#888", anchor='e', justify='right',width=100, padx=8)
@@ -200,13 +189,11 @@ class WindLayer(Layer):
 
     def on_map_double_click(self, event):
         self.fill_frame(event)
-        
-        # Get latitude and longitude from map
+
         lat, lon = self.map_widget.convert_canvas_coords_to_decimal_coords(event.x, event.y)
         weather_url = f"https://api.tomorrow.io/v4/weather/realtime?location={lat}, {lon}&apikey=AqwaRL5CVxt61JpyfxrCHeZAto4W6zlH"
         headers = {"accept": "application/json"}
 
-        # Call API
         weather_response = (requests.get(weather_url, headers=headers)).json()["data"]["values"]
         
         wind_direction_label = customtkinter.CTkLabel(master=self.frame, text="wind_direction", text_color="#888", anchor='e', justify='right',width=100, padx=8)
@@ -240,12 +227,10 @@ class TemperatureLayer(Layer):
     def on_map_double_click(self, event):
         self.fill_frame(event)
         
-        # Get latitude and longitude from map
         lat, lon = self.map_widget.convert_canvas_coords_to_decimal_coords(event.x, event.y)
         weather_url = f"https://api.tomorrow.io/v4/weather/realtime?location={lat}, {lon}&apikey=AqwaRL5CVxt61JpyfxrCHeZAto4W6zlH"
         headers = {"accept": "application/json"}
 
-        # Call API
         weather_response = (requests.get(weather_url, headers=headers)).json()["data"]["values"]
         
         temperature_label = customtkinter.CTkLabel(master=self.frame, text="temperature", text_color="#888", anchor='e', justify='right',width=100, padx=8)
