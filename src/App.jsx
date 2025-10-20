@@ -178,27 +178,30 @@ function App() {
 
   return (
     <div className="app">
-      <header className="app__header">
-        <div>
-          <h1>WeatherMaps</h1>
-          <p>Interactive weather overlays and local insights for any point on the globe.</p>
-        </div>
-        <form className="search" onSubmit={handleSearch}>
-          <input
-            type="text"
-            placeholder="Search for a place"
-            value={searchValue}
-            onChange={(event) => setSearchValue(event.target.value)}
-            aria-label="Search for a location"
-          />
-          <button type="submit">Search</button>
-        </form>
-      </header>
+      <WeatherMap
+        center={position}
+        overlayUrl={overlayUrl}
+        onDoubleClick={handleMapDoubleClick}
+      />
 
-      <main className="app__content">
-        <div className="map-panel">
-          <div className="map-panel__toolbar">
-            <label htmlFor="layer-select">Layer</label>
+      <div className="overlay">
+        <div className="overlay__card overlay__card--controls">
+          <div className="overlay__brand">
+            <h1>WeatherMaps</h1>
+            <p>Interactive weather overlays and local insights for any point on the globe.</p>
+          </div>
+          <form className="overlay__search" onSubmit={handleSearch}>
+            <input
+              type="text"
+              placeholder="Search for a place"
+              value={searchValue}
+              onChange={(event) => setSearchValue(event.target.value)}
+              aria-label="Search for a location"
+            />
+            <button type="submit">Search</button>
+          </form>
+          <label className="overlay__select" htmlFor="layer-select">
+            <span>Layer</span>
             <select
               id="layer-select"
               value={selectedLayer}
@@ -213,12 +216,7 @@ function App() {
                 </option>
               ))}
             </select>
-          </div>
-          <WeatherMap
-            center={position}
-            overlayUrl={overlayUrl}
-            onDoubleClick={handleMapDoubleClick}
-          />
+          </label>
         </div>
 
         <WeatherDetails
@@ -226,13 +224,7 @@ function App() {
           loading={loadingDetails}
           errorMessage={errorMessage}
         />
-      </main>
-
-      <footer className="app__footer">
-        <p>
-          Double-click the map to load local details. Data provided by Geoapify, Tomorrow.io, and OpenWeatherMap.
-        </p>
-      </footer>
+      </div>
     </div>
   );
 }
