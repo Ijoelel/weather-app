@@ -79,6 +79,7 @@ function App() {
   const [details, setDetails] = useState(null);
   const [loadingDetails, setLoadingDetails] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [overlayOpen, setOverlayOpen] = useState(false);
 
   useEffect(() => {
     if (!navigator.geolocation) {
@@ -132,6 +133,7 @@ function App() {
   };
 
   const handleMapDoubleClick = async ({ lat, lng }) => {
+    setOverlayOpen(true);
     setLoadingDetails(true);
     setErrorMessage("");
 
@@ -184,46 +186,62 @@ function App() {
         onDoubleClick={handleMapDoubleClick}
       />
 
-      <div className="overlay">
-        <div className="overlay__card overlay__card--controls">
-          <div className="overlay__brand">
-            <h1>WeatherMaps</h1>
-            <p>Interactive weather overlays and local insights for any point on the globe.</p>
-          </div>
-          <form className="overlay__search" onSubmit={handleSearch}>
-            <input
-              type="text"
-              placeholder="Search for a place"
-              value={searchValue}
-              onChange={(event) => setSearchValue(event.target.value)}
-              aria-label="Search for a location"
-            />
-            <button type="submit">Search</button>
-          </form>
-          <label className="overlay__select" htmlFor="layer-select">
-            <span>Layer</span>
-            <select
-              id="layer-select"
-              value={selectedLayer}
-              onChange={(event) => {
-                setSelectedLayer(event.target.value);
-                setDetails(null);
-              }}
-            >
-              {Object.keys(LAYER_CONFIG).map((layer) => (
-                <option key={layer} value={layer}>
-                  {LAYER_CONFIG[layer].label}
-                </option>
-              ))}
-            </select>
-          </label>
-        </div>
+      <div className="overlay-wrapper">
+        <button
+          type="button"
+          className={`overlay-toggle${overlayOpen ? " overlay-toggle--open" : ""}`}
+          onClick={() => setOverlayOpen((value) => !value)}
+          aria-expanded={overlayOpen}
+          aria-controls="overlay-panel"
+        >
+          {overlayOpen ? "Hide panel" : "Show panel"}
+        </button>
 
-        <WeatherDetails
-          details={details}
-          loading={loadingDetails}
-          errorMessage={errorMessage}
-        />
+        <div
+          id="overlay-panel"
+          className={`overlay${overlayOpen ? " overlay--open" : ""}`}
+          aria-hidden={!overlayOpen}
+        >
+          <div className="overlay__card overlay__card--controls">
+            <div className="overlay__brand">
+              <h1>WeatherMaps</h1>
+              <p>Interactive weather overlays and local insights for any point on the globe.</p>
+            </div>
+            <form className="overlay__search" onSubmit={handleSearch}>
+              <input
+                type="text"
+                placeholder="Search for a place"
+                value={searchValue}
+                onChange={(event) => setSearchValue(event.target.value)}
+                aria-label="Search for a location"
+              />
+              <button type="submit">Search</button>
+            </form>
+            <label className="overlay__select" htmlFor="layer-select">
+              <span>Layer</span>
+              <select
+                id="layer-select"
+                value={selectedLayer}
+                onChange={(event) => {
+                  setSelectedLayer(event.target.value);
+                  setDetails(null);
+                }}
+              >
+                {Object.keys(LAYER_CONFIG).map((layer) => (
+                  <option key={layer} value={layer}>
+                    {LAYER_CONFIG[layer].label}
+                  </option>
+                ))}
+              </select>
+            </label>
+          </div>
+
+          <WeatherDetails
+            details={details}
+            loading={loadingDetails}
+            errorMessage={errorMessage}
+          />
+        </div>
       </div>
     </div>
   );

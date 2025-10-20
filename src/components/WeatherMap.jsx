@@ -15,6 +15,7 @@ function WeatherMap({ center, overlayUrl, onDoubleClick }) {
       zoom={13}
       className="map"
       doubleClickZoom={false}
+      zoomControl={false}
       scrollWheelZoom
     >
       <TileLayer attribution={BASE_ATTRIBUTION} url={BASE_TILE_URL} />
